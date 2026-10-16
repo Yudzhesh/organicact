@@ -21,305 +21,170 @@
     --red-fg: #8B3B3B;
     --radius: 12px;
   }
-
   * { box-sizing: border-box; }
-
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--text);
-    background: var(--bg);
+    font-size: 15px; line-height: 1.5; color: var(--text); background: var(--bg);
     -webkit-font-smoothing: antialiased;
   }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+  header { margin-bottom: 20px; }
+  header h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--muted); font-size: 14px; }
 
-  .wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 24px 16px 64px;
-  }
-
-  header {
-    margin-bottom: 20px;
-  }
-  header h1 {
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0 0 4px;
-  }
-  header p {
-    margin: 0;
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  /* ── Вкладки ─────────────────────────────── */
   .tabs {
-    display: flex;
-    gap: 6px;
-    background: #EDF1F5;
-    padding: 4px;
-    border-radius: var(--radius);
-    margin-bottom: 20px;
+    display: flex; gap: 6px; background: #EDF1F5; padding: 4px;
+    border-radius: var(--radius); margin-bottom: 20px;
   }
   .tabs button {
-    flex: 1;
-    background: transparent;
-    border: 0;
-    padding: 10px 12px;
-    border-radius: 9px;
-    font: inherit;
-    color: var(--muted);
-    cursor: pointer;
+    flex: 1; background: transparent; border: 0; padding: 10px 12px;
+    border-radius: 9px; font: inherit; color: var(--muted); cursor: pointer;
     transition: background .15s, color .15s;
   }
   .tabs button.active {
-    background: var(--card);
-    color: var(--text);
-    box-shadow: 0 1px 2px rgba(0,0,0,.05);
-    font-weight: 500;
+    background: var(--card); color: var(--text);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05); font-weight: 500;
   }
-
   .panel { display: none; }
   .panel.active { display: block; }
 
-  /* ── Форма ──────────────────────────────── */
   .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
+    background: var(--card); border-radius: var(--radius); padding: 20px;
     box-shadow: 0 1px 3px rgba(20,30,40,.04);
   }
-
   .field { margin-bottom: 16px; }
   .field label {
-    display: block;
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 6px;
+    display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;
   }
-  .field select,
-  .field input,
-  .field textarea {
-    width: 100%;
-    font: inherit;
-    color: var(--text);
-    background: #FBFCFD;
-    border: 1px solid var(--line);
-    border-radius: 9px;
-    padding: 10px 12px;
-    outline: none;
-    transition: border-color .15s, background .15s;
+  .field select, .field input, .field textarea {
+    width: 100%; font: inherit; color: var(--text); background: #FBFCFD;
+    border: 1px solid var(--line); border-radius: 9px; padding: 10px 12px;
+    outline: none; transition: border-color .15s, background .15s;
   }
-  .field select:focus,
-  .field input:focus,
-  .field textarea:focus {
-    border-color: var(--accent);
-    background: #fff;
+  .field select:focus, .field input:focus, .field textarea:focus {
+    border-color: var(--accent); background: #fff;
   }
-  .field textarea {
-    resize: vertical;
-    min-height: 88px;
-  }
+  .field textarea { resize: vertical; min-height: 88px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; } }
 
-  .row2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  @media (max-width: 480px) {
-    .row2 { grid-template-columns: 1fr; }
-  }
-
-  /* важность — три кнопки */
-  .sev {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-  }
+  .sev { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
   .sev button {
-    font: inherit;
-    padding: 10px 8px;
-    border-radius: 9px;
-    border: 1px solid var(--line);
-    background: #FBFCFD;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all .15s;
-    font-size: 14px;
+    font: inherit; padding: 10px 8px; border-radius: 9px;
+    border: 1px solid var(--line); background: #FBFCFD; color: var(--muted);
+    cursor: pointer; transition: all .15s; font-size: 14px;
   }
-  .sev button[data-v="green"] { }
   .sev button.active[data-v="green"] { background: var(--green); color: var(--green-fg); border-color: #C4DCC4; font-weight: 500; }
   .sev button.active[data-v="yellow"] { background: var(--yellow); color: var(--yellow-fg); border-color: #E6D4A0; font-weight: 500; }
   .sev button.active[data-v="red"]    { background: var(--red);    color: var(--red-fg);    border-color: #DFB8B8; font-weight: 500; }
 
-  .actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 4px;
-  }
+  .actions { display: flex; gap: 10px; margin-top: 4px; }
   .btn {
-    font: inherit;
-    font-weight: 500;
-    padding: 11px 18px;
-    border-radius: 9px;
-    border: 0;
-    cursor: pointer;
-    transition: background .15s;
+    font: inherit; font-weight: 500; padding: 11px 18px;
+    border-radius: 9px; border: 0; cursor: pointer; transition: background .15s;
   }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-    flex: 1;
-  }
+  .btn-primary { background: var(--accent); color: #fff; flex: 1; }
   .btn-primary:hover { background: var(--accent-hover); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid var(--line);
-  }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
   .btn-ghost:hover { background: #F1F5F8; color: var(--text); }
 
   .ok {
-    margin-top: 14px;
-    padding: 10px 14px;
-    background: var(--green);
-    color: var(--green-fg);
-    border-radius: 9px;
-    font-size: 14px;
-    display: none;
+    margin-top: 14px; padding: 10px 14px; background: var(--green);
+    color: var(--green-fg); border-radius: 9px; font-size: 14px; display: none;
   }
   .ok.show { display: block; }
 
-  /* ── Итоги недели ───────────────────────── */
+  /* ── Итоги недели ─────────────────────── */
   .week-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-    gap: 12px;
-    flex-wrap: wrap;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; gap: 12px; flex-wrap: wrap;
   }
-  .week-head h2 {
-    margin: 0;
-    font-size: 17px;
-    font-weight: 600;
-  }
-  .week-head .sub {
-    color: var(--muted);
-    font-size: 13px;
-  }
+  .week-head h2 { margin: 0; font-size: 17px; font-weight: 600; }
+  .week-head .sub { color: var(--muted); font-size: 13px; }
 
-  .filters {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
+  .filters { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
   .filters button {
-    font: inherit;
-    font-size: 13px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--line);
-    background: var(--card);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all .15s;
+    font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 20px;
+    border: 1px solid var(--line); background: var(--card); color: var(--muted);
+    cursor: pointer; transition: all .15s;
   }
-  .filters button.active {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
+  .filters button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .section-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .04em;
+    margin: 22px 0 10px;
   }
+  .section-title .count {
+    background: #EDF1F5; color: var(--muted); font-weight: 500;
+    padding: 1px 8px; border-radius: 10px; font-size: 12px;
+  }
+  .section-title:first-of-type { margin-top: 0; }
 
   .note {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    border-left: 4px solid var(--line);
+    background: var(--card); border-radius: var(--radius);
+    padding: 14px 16px; margin-bottom: 10px; border-left: 4px solid var(--line);
     box-shadow: 0 1px 3px rgba(20,30,40,.04);
+    transition: opacity .2s, background .2s;
   }
   .note[data-v="green"]  { border-left-color: #8BBF8B; }
   .note[data-v="yellow"] { border-left-color: #E0C56A; }
   .note[data-v="red"]    { border-left-color: #D68A8A; }
+  .note.worked { opacity: .65; background: #FAFBFC; }
+  .note.worked .body { text-decoration: line-through; text-decoration-color: #B0BAC4; }
 
   .note .meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    margin-bottom: 6px;
-    font-size: 12px;
-    color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    margin-bottom: 6px; font-size: 12px; color: var(--muted);
   }
-  .note .who {
-    font-weight: 600;
-    color: var(--text);
-    font-size: 13px;
-  }
+  .note .who { font-weight: 600; color: var(--text); font-size: 13px; }
   .note .tag {
-    background: #EDF1F5;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 12px;
+    background: #EDF1F5; padding: 2px 8px; border-radius: 10px; font-size: 12px;
   }
   .note[data-v="yellow"] .tag { background: var(--yellow); color: var(--yellow-fg); }
   .note[data-v="red"]    .tag { background: var(--red);    color: var(--red-fg); }
-  .note .body {
-    font-size: 14px;
-    white-space: pre-wrap;
+  .note .body { font-size: 14px; white-space: pre-wrap; }
+
+  .note-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
   }
+  .note-actions button {
+    font: inherit; font-size: 12px; padding: 5px 12px;
+    border-radius: 7px; border: 1px solid var(--line);
+    background: #fff; color: var(--muted); cursor: pointer;
+    transition: all .15s;
+  }
+  .note-actions button.primary {
+    background: var(--green); color: var(--green-fg); border-color: #C4DCC4; font-weight: 500;
+  }
+  .note-actions button.primary:hover { background: #C8DEC8; }
+  .note-actions button:hover:not(.primary) { background: #F1F5F8; color: var(--text); }
 
   .empty {
-    text-align: center;
-    color: var(--muted);
-    padding: 40px 20px;
-    font-size: 14px;
+    text-align: center; color: var(--muted);
+    padding: 40px 20px; font-size: 14px;
   }
 
-  /* ── Блок «Итог недели» ─────────────────── */
   .summary {
-    background: #EDF3F8;
-    border-radius: var(--radius);
-    padding: 16px 18px;
-    margin-bottom: 18px;
+    background: #EDF3F8; border-radius: var(--radius);
+    padding: 16px 18px; margin-bottom: 18px;
   }
   .summary h3 {
-    margin: 0 0 10px;
-    font-size: 14px;
-    color: var(--muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: .03em;
+    margin: 0 0 10px; font-size: 14px; color: var(--muted);
+    font-weight: 500; text-transform: uppercase; letter-spacing: .03em;
   }
-  .summary ul {
-    margin: 0;
-    padding-left: 18px;
-  }
+  .summary ul { margin: 0; padding-left: 18px; }
   .summary li { margin-bottom: 4px; font-size: 14px; }
 
-  footer {
-    text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 32px;
-  }
-
-  /* Кнопка очистки данных для теста */
-  .reset {
-    margin-top: 24px;
-    text-align: center;
-  }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 32px; }
+  .reset { margin-top: 24px; text-align: center; }
   .reset button {
-    background: transparent;
-    border: 0;
-    color: #B0BAC4;
-    font-size: 12px;
-    cursor: pointer;
-    text-decoration: underline;
+    background: transparent; border: 0; color: #B0BAC4; font-size: 12px;
+    cursor: pointer; text-decoration: underline;
   }
 </style>
 </head>
@@ -342,12 +207,13 @@
         <label>Педагог</label>
         <select id="teacher">
           <option value="">— выберите —</option>
-          <option>Анна Борисовна</option>
-          <option>Елена Васильевна</option>
-          <option>Мария Цай</option>
-          <option>Анастасия Борисовна</option>
-          <option>Кирилл (англ.)</option>
-          <option>Другой</option>
+          <option>Алсу</option>
+          <option>Юджеш</option>
+          <option>Оксана Сергеевна</option>
+          <option>Мария Александровна</option>
+          <option>Наталья (английский)</option>
+          <option>Анастасия (английский)</option>
+          <option>Вероника</option>
         </select>
       </div>
 
@@ -408,6 +274,7 @@
       <button data-f="red">🔴 Срочные</button>
       <button data-f="yellow">🟡 Внимание</button>
       <button data-f="green">🟢 Обычные</button>
+      <button data-f="worked">✅ Отработанные</button>
     </div>
 
     <div id="notesList"></div>
@@ -417,12 +284,12 @@
     <button onclick="resetAll()">очистить все заметки (для теста)</button>
   </div>
 
-  <footer>v0.1 · интерфейс-прототип, данные хранятся в браузере</footer>
+  <footer>v0.2 · интерфейс-прототип, данные хранятся в браузере</footer>
 </div>
 
 <script>
   /* ─── Состояние ─────────────────────────── */
-  const STORAGE_KEY = "ped_journal_notes_v1";
+  const STORAGE_KEY = "ped_journal_notes_v2";
   let notes = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
   let currentSeverity = "green";
   let currentFilter = "all";
@@ -483,7 +350,8 @@
       targetType,
       targetName: targetType === "general" ? "" : targetName,
       severity: currentSeverity,
-      text
+      text,
+      worked: false   // отработано или нет (только для красных)
     };
     notes.push(note);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
@@ -508,15 +376,23 @@
     renderWeek();
   }
 
+  /* ─── Отметить «отработано» / вернуть ───── */
+  function toggleWorked(id, value) {
+    const n = notes.find(x => x.id === id);
+    if (!n) return;
+    n.worked = value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    renderWeek();
+  }
+
   /* ─── Итоги недели ──────────────────────── */
   function getWeekRange() {
     const now = new Date();
-    const day = now.getDay() || 7; // Пн = 1
+    const day = now.getDay() || 7;
     const mon = new Date(now); mon.setDate(now.getDate() - day + 1); mon.setHours(0,0,0,0);
     const sun = new Date(mon); sun.setDate(mon.getDate() + 6); sun.setHours(23,59,59,999);
     return { mon, sun };
   }
-
   function isThisWeek(d) {
     const { mon, sun } = getWeekRange();
     return d >= mon && d <= sun;
@@ -534,57 +410,101 @@
       "заметок за неделю: " + weekNotes.length;
 
     // Сводка
+    const redActive = weekNotes.filter(n => n.severity === "red" && !n.worked);
+    const redWorked = weekNotes.filter(n => n.severity === "red" && n.worked);
+    const yellow = weekNotes.filter(n => n.severity === "yellow");
+    const green = weekNotes.filter(n => n.severity === "green");
+    const teachers = [...new Set(weekNotes.map(n => n.teacher))];
+
     const summaryBox = document.getElementById("summaryBox");
     const summaryList = document.getElementById("summaryList");
     summaryList.innerHTML = "";
     if (weekNotes.length > 0) {
-      const redCount = weekNotes.filter(n => n.severity === "red").length;
-      const yellowCount = weekNotes.filter(n => n.severity === "yellow").length;
-      const teachers = [...new Set(weekNotes.map(n => n.teacher))].join(", ");
-      const students = [...new Set(weekNotes.filter(n => n.targetName).map(n => n.targetName))];
-
-      if (redCount) summaryList.innerHTML += `<li>🔴 Срочных заметок: <b>${redCount}</b></li>`;
-      if (yellowCount) summaryList.innerHTML += `<li>🟡 Требуют внимания: <b>${yellowCount}</b></li>`;
-      if (students.length) summaryList.innerHTML += `<li>Учеников упомянули: <b>${students.length}</b> — ${students.slice(0,5).join(", ")}${students.length>5?"…":""}</li>`;
-      summaryList.innerHTML += `<li>Писали: ${teachers}</li>`;
+      if (redActive.length) summaryList.innerHTML += `<li>🔴 Требуют действия: <b>${redActive.length}</b></li>`;
+      if (redWorked.length) summaryList.innerHTML += `<li>✅ Отработано: <b>${redWorked.length}</b></li>`;
+      if (yellow.length) summaryList.innerHTML += `<li>🟡 Требуют внимания: <b>${yellow.length}</b></li>`;
+      summaryList.innerHTML += `<li>Писали: ${teachers.join(", ")}</li>`;
       summaryBox.style.display = "block";
     } else {
       summaryBox.style.display = "none";
     }
 
-    // Фильтр
-    let list = weekNotes;
-    if (currentFilter !== "all") list = list.filter(n => n.severity === currentFilter);
-    list.sort((a, b) => {
-      const rank = { red: 0, yellow: 1, green: 2 };
-      if (rank[a.severity] !== rank[b.severity]) return rank[a.severity] - rank[b.severity];
-      return new Date(b.date) - new Date(a.date);
-    });
+    // Собираем разделы
+    let sections = [];
+
+    if (currentFilter === "all") {
+      if (redActive.length) sections.push({ title: "🔴 Требуют действия", notes: redActive });
+      if (yellow.length)    sections.push({ title: "🟡 Обратить внимание", notes: yellow });
+      if (green.length)     sections.push({ title: "🟢 Обычные", notes: green });
+      if (redWorked.length) sections.push({ title: "✅ Отработано", notes: redWorked, dim: true });
+    } else if (currentFilter === "red") {
+      sections.push({ title: "🔴 Требуют действия", notes: redActive });
+      sections.push({ title: "✅ Отработано", notes: redWorked, dim: true });
+    } else if (currentFilter === "yellow") {
+      sections.push({ title: "🟡 Обратить внимание", notes: yellow });
+    } else if (currentFilter === "green") {
+      sections.push({ title: "🟢 Обычные", notes: green });
+    } else if (currentFilter === "worked") {
+      sections.push({ title: "✅ Отработано", notes: redWorked, dim: true });
+    }
+
+    // Убираем пустые секции
+    sections = sections.filter(s => s.notes.length > 0);
 
     const container = document.getElementById("notesList");
-    if (list.length === 0) {
+    if (sections.length === 0) {
       container.innerHTML = `<div class="empty">Здесь появятся заметки этой недели.</div>`;
       return;
     }
 
-    container.innerHTML = list.map(n => {
-      const d = new Date(n.date);
-      const dateStr = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
-      const timeStr = d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
-      const target = n.targetName ? `<span class="tag">${escapeHtml(n.targetName)}</span>` : `<span class="tag">общее</span>`;
-      const label = { red: "срочно", yellow: "внимание", green: "обычное" }[n.severity];
+    container.innerHTML = sections.map(sec => {
+      const sorted = sec.notes.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+      const items = sorted.map(n => renderNote(n)).join("");
       return `
-        <div class="note" data-v="${n.severity}">
-          <div class="meta">
-            <span class="who">${escapeHtml(n.teacher)}</span>
-            <span>${dateStr}, ${timeStr}</span>
-            ${target}
-            <span class="tag">${label}</span>
-          </div>
-          <div class="body">${escapeHtml(n.text)}</div>
+        <div class="section-title">
+          <span>${sec.title}</span>
+          <span class="count">${sorted.length}</span>
         </div>
+        ${items}
       `;
     }).join("");
+  }
+
+  function renderNote(n) {
+    const d = new Date(n.date);
+    const dateStr = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+    const timeStr = d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+    const target = n.targetName
+      ? `<span class="tag">${escapeHtml(n.targetName)}</span>`
+      : `<span class="tag">общее</span>`;
+    const label = { red: "срочно", yellow: "внимание", green: "обычное" }[n.severity];
+
+    // Кнопки действий — только для красных
+    let actions = "";
+    if (n.severity === "red") {
+      if (!n.worked) {
+        actions = `<div class="note-actions">
+          <button class="primary" onclick="toggleWorked(${n.id}, true)">✓ Отработано</button>
+        </div>`;
+      } else {
+        actions = `<div class="note-actions">
+          <button onclick="toggleWorked(${n.id}, false)">↩︎ Вернуть в работу</button>
+        </div>`;
+      }
+    }
+
+    return `
+      <div class="note ${n.worked ? 'worked' : ''}" data-v="${n.severity}">
+        <div class="meta">
+          <span class="who">${escapeHtml(n.teacher)}</span>
+          <span>${dateStr}, ${timeStr}</span>
+          ${target}
+          <span class="tag">${label}</span>
+        </div>
+        <div class="body">${escapeHtml(n.text)}</div>
+        ${actions}
+      </div>
+    `;
   }
 
   /* ─── Фильтры ───────────────────────────── */
@@ -601,16 +521,32 @@
   function copyAsText() {
     const weekNotes = notes.filter(n => isThisWeek(new Date(n.date)));
     if (weekNotes.length === 0) { alert("Пока нечего копировать"); return; }
-    weekNotes.sort((a, b) => {
-      const rank = { red: 0, yellow: 1, green: 2 };
-      return rank[a.severity] - rank[b.severity];
-    });
-    const lines = weekNotes.map(n => {
-      const icon = { red: "🔴", yellow: "🟡", green: "🟢" }[n.severity];
-      const target = n.targetName ? ` [${n.targetName}]` : "";
-      return `${icon} ${n.teacher}${target}: ${n.text}`;
-    });
-    const text = "Педагогический дневник — итоги недели\n\n" + lines.join("\n");
+
+    const redActive = weekNotes.filter(n => n.severity === "red" && !n.worked);
+    const redWorked = weekNotes.filter(n => n.severity === "red" && n.worked);
+    const yellow = weekNotes.filter(n => n.severity === "yellow");
+    const green = weekNotes.filter(n => n.severity === "green");
+
+    const block = (title, arr) => {
+      if (!arr.length) return "";
+      const sorted = arr.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+      const lines = sorted.map(n => {
+        const t = n.targetName ? ` [${n.targetName}]` : "";
+        return `• ${n.teacher}${t}: ${n.text}`;
+      }).join("\n");
+      return `${title}\n${lines}\n`;
+    };
+
+    const parts = [
+      "Педагогический дневник — итоги недели",
+      "",
+      block("🔴 Требуют действия", redActive),
+      block("🟡 Обратить внимание", yellow),
+      block("🟢 Обычные", green),
+      block("✅ Отработано", redWorked)
+    ].filter(Boolean);
+
+    const text = parts.join("\n");
     navigator.clipboard.writeText(text).then(
       () => alert("Скопировано в буфер"),
       () => alert("Не удалось скопировать, скопируйте вручную")
@@ -628,14 +564,17 @@
     const now = new Date();
     notes = [
       { id: 1, date: new Date(now.getTime() - 86400000).toISOString(),
-        teacher: "Мария Цай", targetType: "student", targetName: "Алмаз Салаватов",
-        severity: "red", text: "Не понял тему про одночлены. Нужно вернуться и разобрать заново." },
+        teacher: "Мария Александровна", targetType: "student", targetName: "Алмаз Салаватов",
+        severity: "red", text: "Не понял тему про одночлены. Нужно вернуться и разобрать заново.", worked: false },
       { id: 2, date: new Date(now.getTime() - 172800000).toISOString(),
-        teacher: "Кирилл (англ.)", targetType: "student", targetName: "Мария Шихалдина",
-        severity: "yellow", text: "Хорошо соображает, но последние две домашки не пришли. Проверить." },
+        teacher: "Наталья (английский)", targetType: "student", targetName: "Мария Шихалдина",
+        severity: "yellow", text: "Хорошо соображает, но последние две домашки не пришли. Проверить.", worked: false },
       { id: 3, date: new Date(now.getTime() - 259200000).toISOString(),
-        teacher: "Анна Борисовна", targetType: "group", targetName: "Группа 3",
-        severity: "green", text: "Продуктивная неделя, много практики по геометрии." }
+        teacher: "Алсу", targetType: "group", targetName: "Группа 3",
+        severity: "green", text: "Продуктивная неделя, много практики по геометрии.", worked: false },
+      { id: 4, date: new Date(now.getTime() - 345600000).toISOString(),
+        teacher: "Оксана Сергеевна", targetType: "student", targetName: "Пётр Бычков",
+        severity: "red", text: "Не сдал самостоятельную по русскому. Разобрались в пятницу.", worked: true }
     ];
     localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
   }
