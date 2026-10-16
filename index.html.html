@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Органическое действие — помощник</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;color:#1a1a1a;font-family:'TildaSans',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  #oa-app{max-width:720px;margin:0 auto;padding:24px 20px 60px}
+  .oa-header{margin-bottom:20px}
+  .oa-header h1{font-size:26px;font-weight:600;margin:0 0 4px;letter-spacing:-.02em}
+  .oa-sub{font-size:14px;color:#888;margin:0}
+  .oa-btn{font-family:inherit;font-size:15px;padding:12px 20px;border:none;border-radius:10px;cursor:pointer;transition:opacity .15s}
+  .oa-btn:hover{opacity:.85}
+  .oa-btn-add{width:100%;background:#1a1a1a;color:#fff;margin-bottom:16px;font-weight:500}
+  .oa-btn-primary{background:#1a1a1a;color:#fff}
+  .oa-btn-ghost{background:transparent;color:#666;border:1px solid #ddd}
+  .oa-btn-small{padding:8px 12px;font-size:13px}
+  .oa-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .oa-stat{flex:1;min-width:80px;background:#fafafa;border:1px solid #f0f0f0;border-radius:10px;padding:10px 12px;text-align:center}
+  .oa-stat-num{font-size:22px;font-weight:600;line-height:1.1}
+  .oa-stat-label{font-size:11px;color:#888;margin-top:2px}
+  .oa-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+  .oa-filter{font-family:inherit;font-size:13px;padding:7px 12px;border:1px solid #ddd;background:#fff;color:#666;border-radius:8px;cursor:pointer}
+  .oa-filter.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+  .oa-tools-right{margin-left:auto;display:flex;gap:6px}
+  .oa-card{background:#fafafa;border-radius:12px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:background .15s;border:1px solid #f0f0f0}
+  .oa-card:hover{background:#f4f4f4}
+  .oa-card-title{font-size:17px;font-weight:500;margin:0 0 8px}
+  .oa-card-meta{font-size:13px;color:#888;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .oa-tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:6px;background:#eee;color:#555}
+  .oa-tag-own{background:#e8f5e9;color:#2e7d32}
+  .oa-tag-accepted{background:#fff8e1;color:#f57f17}
+  .oa-tag-forced{background:#ffebee;color:#c62828}
+  .oa-tag-done{background:#e3f2fd;color:#1565c0}
+  .oa-tag-active{background:#f5f5f5;color:#777}
+  .oa-empty{text-align:center;color:#aaa;padding:40px 20px;font-size:15px;line-height:1.6}
+  .oa-hidden{display:none!important}
+  .oa-form-section{margin-bottom:26px}
+  .oa-form-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#999;margin-bottom:12px;font-weight:500}
+  .oa-field{margin-bottom:12px}
+  .oa-field label{display:block;font-size:14px;color:#555;margin-bottom:5px}
+  .oa-field input[type=text],.oa-field input[type=date],.oa-field textarea,.oa-field select{width:100%;font-family:inherit;font-size:15px;padding:10px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a}
+  .oa-field textarea{min-height:60px;resize:vertical}
+  .oa-field input:focus,.oa-field textarea:focus,.oa-field select:focus{outline:none;border-color:#1a1a1a}
+  .oa-radios{display:flex;gap:8px;flex-wrap:wrap}
+  .oa-radio{flex:1;min-width:90px;padding:10px 12px;border:1px solid #ddd;border-radius:8px;text-align:center;font-size:14px;cursor:pointer;background:#fff;transition:all .15s;user-select:none}
+  .oa-radio.active{border-color:#1a1a1a;background:#1a1a1a;color:#fff}
+  .oa-shift{background:#fafafa;border-radius:10px;padding:14px;margin-bottom:10px;position:relative;border:1px solid #f0f0f0}
+  .oa-shift-remove{position:absolute;top:8px;right:10px;background:none;border:none;color:#bbb;font-size:20px;cursor:pointer;padding:2px 8px;line-height:1}
+  .oa-shift-remove:hover{color:#e53935}
+  .oa-add-shift{background:transparent;border:1px dashed #ccc;color:#777;padding:10px;width:100%;border-radius:10px;cursor:pointer;font-family:inherit;font-size:14px}
+  .oa-add-shift:hover{border-color:#999;color:#333}
+  .oa-form-actions{display:flex;gap:10px;margin-top:8px}
+  .oa-form-actions .oa-btn{flex:1}
+  .oa-detail-back{background:none;border:none;color:#888;font-family:inherit;font-size:14px;cursor:pointer;padding:0;margin-bottom:20px}
+  .oa-detail-back:hover{color:#333}
+  .oa-detail-title{font-size:24px;font-weight:600;margin:0 0 10px}
+  .oa-detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .oa-detail-dates{font-size:13px;color:#888;margin-bottom:20px}
+  .oa-block{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid #f0f0f0}
+  .oa-block:last-child{border-bottom:none;padding-bottom:0}
+  .oa-block-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#999;margin-bottom:10px;font-weight:500}
+  .oa-block-row{display:flex;gap:10px;margin-bottom:6px;font-size:15px}
+  .oa-block-row .k{color:#888;min-width:100px}
+  .oa-block-row .v{color:#1a1a1a;flex:1}
+  .oa-metrics{display:flex;gap:12px;flex-wrap:wrap}
+  .oa-metric{background:#fafafa;padding:12px 16px;border-radius:10px;min-width:90px;border:1px solid #f0f0f0}
+  .oa-metric-num{font-size:24px;font-weight:600;color:#1a1a1a;line-height:1.1}
+  .oa-metric-label{font-size:12px;color:#888;margin-top:4px}
+  .oa-footer{margin-top:40px;padding-top:20px;border-top:1px solid #f0f0f0;font-size:13px;color:#aaa;text-align:center}
+</style>
+</head>
+<body>
+
+<div id="oa-app">
+  <div class="oa-header">
+    <h1>Органическое действие</h1>
+    <p class="oa-sub">Помощник для практики</p>
+  </div>
+
+  <div id="oa-view-list">
+    <div class="oa-stats" id="oa-stats"></div>
+    <button class="oa-btn oa-btn-add" id="oa-add-btn">+ Новое действие</button>
+    <div class="oa-tools">
+      <button class="oa-filter active" data-filter="all">Все</button>
+      <button class="oa-filter" data-filter="active">В процессе</button>
+      <button class="oa-filter" data-filter="done">Завершено</button>
+      <div class="oa-tools-right">
+        <button class="oa-btn oa-btn-ghost oa-btn-small" data-act="export" title="Скачать все действия">↓</button>
+        <button class="oa-btn oa-btn-ghost oa-btn-small" data-act="import" title="Загрузить из файла">↑</button>
+      </div>
+    </div>
+    <div id="oa-list"></div>
+    <input type="file" id="oa-import-file" accept=".json,application/json" style="display:none">
+  </div>
+
+  <div id="oa-view-form" class="oa-hidden">
+    <button class="oa-detail-back" data-act="cancel">← Отмена</button>
+    <div id="oa-form-body"></div>
+  </div>
+
+  <div id="oa-view-detail" class="oa-hidden">
+    <div id="oa-detail-body"></div>
+  </div>
+
+  <div class="oa-footer">Данные хранятся в вашем браузере</div>
+</div>
+
+<script>
+(function(){
+  var KEY='organic_action_v1';
+  var app=document.getElementById('oa-app');
+  var viewList=document.getElementById('oa-view-list');
+  var viewForm=document.getElementById('oa-view-form');
+  var viewDetail=document.getElementById('oa-view-detail');
+  var listEl=document.getElementById('oa-list');
+  var formEl=document.getElementById('oa-form-body');
+  var detailEl=document.getElementById('oa-detail-body');
+  var statsEl=document.getElementById('oa-stats');
+  var importFile=document.getElementById('oa-import-file');
+  var actions=[],editing=null,viewing=null,filter='all';
+
+  try{var raw=localStorage.getItem(KEY);if(raw)actions=JSON.parse(raw);}catch(e){actions=[];}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(actions));}catch(e){}}
+  function esc(s){if(s==null)return '';return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function newAction(){return{id:Date.now()+Math.floor(Math.random()*1000),name:'',type:'',plan:{benefit:'',value:'',quality:'',obstacles:'',inertia:''},transition:{when:'',feel:''},shifts:[],exit:{result:'',matched:'',released:''},created:Date.now(),startedAt:null,completedAt:null};}
+
+  function fmtDate(ts){
+    if(!ts)return '';
+    var d=new Date(ts);
+    var day=String(d.getDate());if(day.length<2)day='0'+day;
+    var m=String(d.getMonth()+1);if(m.length<2)m='0'+m;
+    return day+'.'+m+'.'+d.getFullYear();
+  }
+  function toInputDate(ts){if(!ts)return '';var d=new Date(ts);var y=d.getFullYear();var m=String(d.getMonth()+1);if(m.length<2)m='0'+m;var day=String(d.getDate());if(day.length<2)day='0'+day;return y+'-'+m+'-'+day;}
+  function fromInputDate(s){if(!s)return null;var parts=s.split('-');if(parts.length!==3)return null;return new Date(Number(parts[0]),Number(parts[1])-1,Number(parts[2])).getTime();}
+
+  function isDone(a){return !!(a.completedAt||a.exit.result);}
+  function typeLabel(t){if(t==='own')return{text:'своё',cls:'oa-tag-own'};if(t==='accepted')return{text:'принятое',cls:'oa-tag-accepted'};if(t==='forced')return{text:'принуждение',cls:'oa-tag-forced'};return{text:'—',cls:''};}
+
+  function showList(){viewList.classList.remove('oa-hidden');viewForm.classList.add('oa-hidden');viewDetail.classList.add('oa-hidden');renderStats();renderList();}
+  function showForm(a){editing=a;viewList.classList.add('oa-hidden');viewForm.classList.remove('oa-hidden');viewDetail.classList.add('oa-hidden');renderForm();}
+  function showDetail(id){viewing=id;viewList.classList.add('oa-hidden');viewForm.classList.add('oa-hidden');viewDetail.classList.remove('oa-hidden');renderDetail();}
+
+  function renderStats(){
+    var total=actions.length;
+    var done=0,active=0,totalShifts=0,totalReturns=0;
+    actions.forEach(function(a){
+      if(isDone(a))done++;else active++;
+      totalShifts+=a.shifts.length;
+      totalReturns+=a.shifts.filter(function(s){return s.returned;}).length;
+    });
+    var avgS=total?Math.round(totalShifts/total*10)/10:0;
+    var avgR=total?Math.round(totalReturns/total*10)/10:0;
+    statsEl.innerHTML=
+      '<div class="oa-stat"><div class="oa-stat-num">'+total+'</div><div class="oa-stat-label">всего</div></div>'
+      +'<div class="oa-stat"><div class="oa-stat-num">'+done+'</div><div class="oa-stat-label">завершено</div></div>'
+      +'<div class="oa-stat"><div class="oa-stat-num">'+active+'</div><div class="oa-stat-label">в процессе</div></div>'
+      +'<div class="oa-stat"><div class="oa-stat-num">'+avgS+'</div><div class="oa-stat-label">смещений / ср.</div></div>'
+      +'<div class="oa-stat"><div class="oa-stat-num">'+avgR+'</div><div class="oa-stat-label">возвратов / ср.</div></div>';
+  }
+
+  function renderList(){
+    var list=actions.slice().sort(function(a,b){return b.created-a.created;});
+    if(filter==='active')list=list.filter(function(a){return !isDone(a);});
+    else if(filter==='done')list=list.filter(function(a){return isDone(a);});
+    if(list.length===0){listEl.innerHTML='<div class="oa-empty">Пока нет действий.<br>Нажмите «Новое действие», чтобы начать.</div>';return;}
+    listEl.innerHTML=list.map(function(a){
+      var t=typeLabel(a.type);
+      var done=isDone(a);
+      var dates=[];
+      if(a.created)dates.push('создано '+fmtDate(a.created));
+      if(a.startedAt)dates.push('начато '+fmtDate(a.startedAt));
+      if(a.completedAt)dates.push('завершено '+fmtDate(a.completedAt));
+      return '<div class="oa-card" data-id="'+a.id+'">'
+        +'<div class="oa-card-title">'+(esc(a.name)||'Без названия')+'</div>'
+        +'<div class="oa-card-meta">'
+        +(a.type?'<span class="oa-tag '+t.cls+'">'+t.text+'</span>':'')
+        +'<span class="oa-tag '+(done?'oa-tag-done':'oa-tag-active')+'">'+(done?'завершено':'в процессе')+'</span>'
+        +'<span>смещений: '+a.shifts.length+'</span>'
+        +'</div>'
+        +(dates.length?'<div style="font-size:12px;color:#aaa;margin-top:6px;">'+dates.join(' · ')+'</div>':'')
+        +'</div>';
+    }).join('');
+  }
+
+  function renderForm(){
+    var a=editing;
+    formEl.innerHTML=
+      '<div class="oa-form-section">'
+      +'<div class="oa-form-label">Действие</div>'
+      +'<div class="oa-field"><label>Название</label><input type="text" data-f="name" value="'+esc(a.name)+'" placeholder="Например: прочитать параграф"></div>'
+      +'<div class="oa-field"><label>Вид действия</label><div class="oa-radios" data-f="type">'
+      +'<div class="oa-radio '+(a.type==='own'?'active':'')+'" data-val="own">Своё</div>'
+      +'<div class="oa-radio '+(a.type==='accepted'?'active':'')+'" data-val="accepted">Принятое</div>'
+      +'<div class="oa-radio '+(a.type==='forced'?'active':'')+'" data-val="forced">Принуждение</div>'
+      +'</div></div>'
+      +'<div class="oa-field"><label>Дата начала</label><input type="date" data-f="startedAt" value="'+toInputDate(a.startedAt)+'"></div>'
+      +'<div class="oa-field"><label>Дата завершения</label><input type="date" data-f="completedAt" value="'+toInputDate(a.completedAt)+'"></div>'
+      +'</div>'
+
+      +'<div class="oa-form-section"><div class="oa-form-label">Замысел</div>'
+      +'<div class="oa-field"><label>Благо: что я хочу получить?</label><textarea data-f="plan.benefit" placeholder="Например: понять тему">'+esc(a.plan.benefit)+'</textarea></div>'
+      +'<div class="oa-field"><label>Ценность: зачем мне это?</label><textarea data-f="plan.value" placeholder="Например: быть уверенным на контрольной">'+esc(a.plan.value)+'</textarea></div>'
+      +'<div class="oa-field"><label>Качество: за счёт чего?</label><input type="text" data-f="plan.quality" value="'+esc(a.plan.quality)+'" placeholder="Например: внимание и терпение"></div>'
+      +'<div class="oa-field"><label>Препятствия: что может помешать?</label><input type="text" data-f="plan.obstacles" value="'+esc(a.plan.obstacles)+'" placeholder="Например: телефон, шум"></div>'
+      +'<div class="oa-field"><label>Инерция: как я хочу, чтобы шло?</label><input type="text" data-f="plan.inertia" value="'+esc(a.plan.inertia)+'" placeholder="Например: спокойно, не торопясь"></div>'
+      +'</div>'
+
+      +'<div class="oa-form-section"><div class="oa-form-label">Точка перехода</div>'
+      +'<div class="oa-field"><label>Когда я заметил момент начала?</label><input type="text" data-f="transition.when" value="'+esc(a.transition.when)+'" placeholder="Например: когда открыл учебник"></div>'
+      +'<div class="oa-field"><label>Что почувствовал?</label><input type="text" data-f="transition.feel" value="'+esc(a.transition.feel)+'" placeholder="Например: собрался"></div>'
+      +'</div>'
+
+      +'<div class="oa-form-section"><div class="oa-form-label">Смещения и энтропия</div>'
+      +'<div id="oa-shifts"></div>'
+      +'<button class="oa-add-shift" data-act="add-shift">+ Добавить смещение</button>'
+      +'</div>'
+
+      +'<div class="oa-form-section"><div class="oa-form-label">Точка выхода</div>'
+      +'<div class="oa-field"><label>Результат: что получилось?</label><textarea data-f="exit.result" placeholder="Например: прочитал, понял основное">'+esc(a.exit.result)+'</textarea></div>'
+      +'<div class="oa-field"><label>Совпало с замыслом?</label><div class="oa-radios" data-f="exit.matched">'
+      +'<div class="oa-radio '+(a.exit.matched==='yes'?'active':'')+'" data-val="yes">Да</div>'
+      +'<div class="oa-radio '+(a.exit.matched==='partly'?'active':'')+'" data-val="partly">Частично</div>'
+      +'<div class="oa-radio '+(a.exit.matched==='no'?'active':'')+'" data-val="no">Нет</div>'
+      +'</div></div>'
+      +'<div class="oa-field"><label>Отпустил?</label><div class="oa-radios" data-f="exit.released">'
+      +'<div class="oa-radio '+(a.exit.released==='yes'?'active':'')+'" data-val="yes">Да</div>'
+      +'<div class="oa-radio '+(a.exit.released==='no'?'active':'')+'" data-val="no">Нет</div>'
+      +'</div></div>'
+      +'</div>'
+
+      +'<div class="oa-form-actions">'
+      +'<button class="oa-btn oa-btn-ghost" data-act="cancel">Отмена</button>'
+      +'<button class="oa-btn oa-btn-primary" data-act="save">Сохранить</button>'
+      +'</div>';
+    renderShifts();
+  }
+
+  function renderShifts(){
+    var el=document.getElementById('oa-shifts');if(!el)return;
+    var a=editing;
+    if(a.shifts.length===0){el.innerHTML='<div style="color:#aaa;font-size:14px;margin-bottom:10px;">Пока нет смещений</div>';return;}
+    el.innerHTML=a.shifts.map(function(s,i){
+      return '<div class="oa-shift">'
+        +'<button class="oa-shift-remove" data-act="remove-shift" data-i="'+i+'">×</button>'
+        +'<div class="oa-field"><label>Что сбило?</label><input type="text" data-shift="'+i+'" data-k="what" value="'+esc(s.what)+'" placeholder="Например: телефон"></div>'
+        +'<div class="oa-field"><label>Тип энтропии</label><select data-shift="'+i+'" data-k="type">'
+        +'<option value="">—</option>'
+        +'<option value="external"'+(s.type==='external'?' selected':'')+'>Внешняя</option>'
+        +'<option value="internal"'+(s.type==='internal'?' selected':'')+'>Внутренняя</option>'
+        +'<option value="structural"'+(s.type==='structural'?' selected':'')+'>Структурная</option>'
+        +'</select></div>'
+        +'<div class="oa-field" style="margin-bottom:0;"><label style="display:flex;align-items:center;cursor:pointer;"><input type="checkbox" data-shift="'+i+'" data-k="returned"'+(s.returned?' checked':'')+' style="width:auto;margin-right:8px;"> Вернулся к замыслу</label></div>'
+        +'</div>';
+    }).join('');
+  }
+
+  function renderDetail(){
+    var a=actions.find(function(x){return x.id===viewing;});
+    if(!a){showList();return;}
+    var t=typeLabel(a.type);
+    var shifts=a.shifts.length;
+    var returned=a.shifts.filter(function(s){return s.returned;}).length;
+    var done=isDone(a);
+    var shiftTypeLabel=function(tp){return {external:'внешняя',internal:'внутренняя',structural:'структурная'}[tp]||'—';};
+
+    var dates='';
+    if(a.created)dates+='создано '+fmtDate(a.created);
+    if(a.startedAt)dates+=(dates?' · ':'')+'начато '+fmtDate(a.startedAt);
+    if(a.completedAt)dates+=(dates?' · ':'')+'завершено '+fmtDate(a.completedAt);
+
+    var html='<button class="oa-detail-back" data-act="back">← Все действия</button>'
+      +'<h2 class="oa-detail-title">'+(esc(a.name)||'Без названия')+'</h2>'
+      +'<div class="oa-detail-tags">'
+      +(a.type?'<span class="oa-tag '+t.cls+'">'+t.text+'</span>':'')
+      +'<span class="oa-tag '+(done?'oa-tag-done':'oa-tag-active')+'">'+(done?'завершено':'в процессе')+'</span>'
+      +'</div>'
+      +(dates?'<div class="oa-detail-dates">'+dates+'</div>':'');
+
+    html+='<div class="oa-block" style="margin-top:20px;"><div class="oa-block-label">Замысел</div>';
+    if(a.plan.benefit)html+='<div class="oa-block-row"><span class="k">Благо</span><span class="v">'+esc(a.plan.benefit)+'</span></div>';
+    if(a.plan.value)html+='<div class="oa-block-row"><span class="k">Ценность</span><span class="v">'+esc(a.plan.value)+'</span></div>';
+    if(a.plan.quality)html+='<div class="oa-block-row"><span class="k">Качество</span><span class="v">'+esc(a.plan.quality)+'</span></div>';
+    if(a.plan.obstacles)html+='<div class="oa-block-row"><span class="k">Препятствия</span><span class="v">'+esc(a.plan.obstacles)+'</span></div>';
+    if(a.plan.inertia)html+='<div class="oa-block-row"><span class="k">Инерция</span><span class="v">'+esc(a.plan.inertia)+'</span></div>';
+    html+='</div>';
+
+    if(a.transition.when||a.transition.feel){
+      html+='<div class="oa-block"><div class="oa-block-label">Точка перехода</div>';
+      if(a.transition.when)html+='<div class="oa-block-row"><span class="k">Когда</span><span class="v">'+esc(a.transition.when)+'</span></div>';
+      if(a.transition.feel)html+='<div class="oa-block-row"><span class="k">Чувство</span><span class="v">'+esc(a.transition.feel)+'</span></div>';
+      html+='</div>';
+    }
+
+    if(a.shifts.length>0){
+      html+='<div class="oa-block"><div class="oa-block-label">Смещения</div>';
+      a.shifts.forEach(function(s,i){
+        html+='<div class="oa-block-row"><span class="k">'+(i+1)+'. '+(esc(s.what)||'—')+'</span><span class="v">'+shiftTypeLabel(s.type)+' · '+(s.returned?'вернулся':'не вернулся')+'</span></div>';
+      });
+      html+='</div>';
+    }
+
+    if(a.exit.result||a.exit.matched||a.exit.released){
+      html+='<div class="oa-block"><div class="oa-block-label">Точка выхода</div>';
+      if(a.exit.result)html+='<div class="oa-block-row"><span class="k">Результат</span><span class="v">'+esc(a.exit.result)+'</span></div>';
+      if(a.exit.matched)html+='<div class="oa-block-row"><span class="k">Совпало</span><span class="v">'+({yes:'да',partly:'частично',no:'нет'}[a.exit.matched])+'</span></div>';
+      if(a.exit.released)html+='<div class="oa-block-row"><span class="k">Отпустил</span><span class="v">'+(a.exit.released==='yes'?'да':'нет')+'</span></div>';
+      html+='</div>';
+    }
+
+    html+='<div class="oa-block"><div class="oa-block-label">Метрики</div><div class="oa-metrics">'
+      +'<div class="oa-metric"><div class="oa-metric-num">'+shifts+'</div><div class="oa-metric-label">смещений</div></div>'
+      +'<div class="oa-metric"><div class="oa-metric-num">'+returned+'</div><div class="oa-metric-label">возвратов</div></div>'
+      +'<div class="oa-metric"><div class="oa-metric-num">'+(done?'✓':'…')+'</div><div class="oa-metric-label">'+(done?'завершено':'в процессе')+'</div></div>'
+      +'</div></div>';
+
+    html+='<div class="oa-form-actions">'
+      +'<button class="oa-btn oa-btn-ghost" data-act="share">Скопировать</button>'
+      +'<button class="oa-btn oa-btn-ghost" data-act="delete">Удалить</button>'
+      +'<button class="oa-btn oa-btn-primary" data-act="edit">Редактировать</button>'
+      +'</div>';
+
+    detailEl.innerHTML=html;
+  }
+
+  function setField(obj,path,val){
+    var parts=path.split('.'),cur=obj;
+    for(var i=0;i<parts.length-1;i++)cur=cur[parts[i]];
+    cur[parts[parts.length-1]]=val;
+  }
+
+  function actionToText(a){
+    var lines=[a.name||'Без названия'];
+    if(a.type)lines.push('Вид: '+({own:'своё',accepted:'принятое',forced:'принуждение'}[a.type]));
+    if(a.created)lines.push('Создано: '+fmtDate(a.created));
+    if(a.startedAt)lines.push('Начато: '+fmtDate(a.startedAt));
+    if(a.completedAt)lines.push('Завершено: '+fmtDate(a.completedAt));
+    lines.push('');
+    lines.push('ЗАМЫСЕЛ');
+    if(a.plan.benefit)lines.push('Благо: '+a.plan.benefit);
+    if(a.plan.value)lines.push('Ценность: '+a.plan.value);
+    if(a.plan.quality)lines.push('Качество: '+a.plan.quality);
+    if(a.plan.obstacles)lines.push('Препятствия: '+a.plan.obstacles);
+    if(a.plan.inertia)lines.push('Инерция: '+a.plan.inertia);
+    if(a.transition.when||a.transition.feel){
+      lines.push('');
+      lines.push('ПЕРЕХОД');
+      if(a.transition.when)lines.push('Когда: '+a.transition.when);
+      if(a.transition.feel)lines.push('Чувство: '+a.transition.feel);
+    }
+    if(a.shifts.length){
+      lines.push('');
+      lines.push('СМЕЩЕНИЯ');
+      a.shifts.forEach(function(s,i){
+        lines.push((i+1)+'. '+(s.what||'—')+' ('+({external:'внешняя',internal:'внутренняя',structural:'структурная'}[s.type]||'—')+', '+(s.returned?'вернулся':'не вернулся')+')');
+      });
+    }
+    if(a.exit.result||a.exit.matched||a.exit.released){
+      lines.push('');
+      lines.push('ВЫХОД');
+      if(a.exit.result)lines.push('Результат: '+a.exit.result);
+      if(a.exit.matched)lines.push('Совпало: '+({yes:'да',partly:'частично',no:'нет'}[a.exit.matched]));
+      if(a.exit.released)lines.push('Отпустил: '+(a.exit.released==='yes'?'да':'нет'));
+    }
+    return lines.join('\n');
+  }
+
+  function download(filename,text){
+    var blob=new Blob([text],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download=filename;
+    document.body.appendChild(a);a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);},1000);
+  }
+
+  app.addEventListener('click',function(e){
+    var t=e.target;
+    var filterBtn=t.closest('.oa-filter');
+    if(filterBtn){
+      filter=filterBtn.dataset.filter;
+      var all=app.querySelectorAll('.oa-filter');
+      for(var i=0;i<all.length;i++)all[i].classList.toggle('active',all[i]===filterBtn);
+      renderList();return;
+    }
+    var card=t.closest('.oa-card');
+    if(card&&!t.closest('button')){showDetail(Number(card.dataset.id));return;}
+    var act=t.dataset.act;
+    if(!act){
+      var radio=t.closest('.oa-radio');
+      if(radio){
+        var wrap=radio.parentElement;
+        var f=wrap.dataset.f;
+        var v=radio.dataset.val;
+        if(editing)setField(editing,f,v);
+        var sibs=wrap.querySelectorAll('.oa-radio');
+        for(var j=0;j<sibs.length;j++)sibs[j].classList.toggle('active',sibs[j]===radio);
+      }
+      return;
+    }
+    if(act==='cancel'){showList();}
+    else if(act==='save'){
+      var idx=-1;
+      for(var i=0;i<actions.length;i++)if(actions[i].id===editing.id){idx=i;break;}
+      if(idx>=0)actions[idx]=editing;else actions.push(editing);
+      save();showDetail(editing.id);
+    }
+    else if(act==='back'){showList();}
+    else if(act==='edit'){
+      var a=actions.find(function(x){return x.id===viewing;});
+      if(a)showForm(JSON.parse(JSON.stringify(a)));
+    }
+    else if(act==='delete'){
+      if(confirm('Удалить действие?')){
+        actions=actions.filter(function(x){return x.id!==viewing;});
+        save();showList();
+      }
+    }
+    else if(act==='add-shift'){editing.shifts.push({what:'',type:'',returned:false});renderShifts();}
+    else if(act==='remove-shift'){editing.shifts.splice(Number(t.dataset.i),1);renderShifts();}
+    else if(act==='share'){
+      var a2=actions.find(function(x){return x.id===viewing;});
+      if(a2){
+        var text=actionToText(a2);
+        if(navigator.clipboard&&navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(function(){alert('Скопировано');});
+        }else{
+          var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy');alert('Скопировано');}catch(err){}
+          document.body.removeChild(ta);
+        }
+      }
+    }
+    else if(act==='export'){
+      var data={version:1,exported:Date.now(),actions:actions};
+      var name='organic-action-'+new Date().toISOString().slice(0,10)+'.json';
+      download(name,JSON.stringify(data,null,2));
+    }
+    else if(act==='import'){
+      importFile.click();
+    }
+  });
+
+  importFile.addEventListener('change',function(e){
+    var f=e.target.files[0];if(!f)return;
+    var reader=new FileReader();
+    reader.onload=function(){
+      try{
+        var data=JSON.parse(reader.result);
+        var incoming=data.actions||data;
+        if(!Array.isArray(incoming))throw new Error('Неверный формат');
+        var mode=confirm('Нажмите ОК, чтобы ДОБАВИТЬ к текущим.\nОтмена — заменить всё.');
+        if(mode){
+          incoming.forEach(function(a){
+            if(!a.id)a.id=Date.now()+Math.floor(Math.random()*1000);
+            if(!actions.find(function(x){return x.id===a.id;}))actions.push(a);
+          });
+        }else{
+          actions=incoming;
+        }
+        save();showList();
+        alert('Загружено действий: '+incoming.length);
+      }catch(err){alert('Не удалось прочитать файл: '+err.message);}
+      importFile.value='';
+    };
+    reader.readAsText(f);
+  });
+
+  app.addEventListener('input',function(e){
+    var t=e.target;
+    var f=t.dataset.f;
+    if(f&&editing){
+      if(f==='startedAt'||f==='completedAt'){
+        editing[f]=fromInputDate(t.value);
+      }else{
+        setField(editing,f,t.value);
+      }
+      return;
+    }
+    var si=t.dataset.shift;
+    if(si!==undefined&&editing){
+      var i=Number(si),k=t.dataset.k;
+      if(k==='returned')editing.shifts[i].returned=t.checked;
+      else editing.shifts[i][k]=t.value;
+    }
+  });
+
+  app.addEventListener('change',function(e){
+    var t=e.target;
+    var si=t.dataset.shift;
+    if(si!==undefined&&t.dataset.k==='type'&&editing)editing.shifts[Number(si)].type=t.value;
+  });
+
+  document.getElementById('oa-add-btn').addEventListener('click',function(){showForm(newAction());});
+
+  showList();
+})();
+</script>
+
+</body>
+</html>
